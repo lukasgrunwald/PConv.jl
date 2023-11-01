@@ -4,8 +4,10 @@ Convenience routines for generating and manipulating file names
 using Pkg: project
 
 # ——————————————————————— Generation and versionization of paths ——————————————————————— #
-"""Absolute path of current active project (folder containing `Project.toml`)"""
-const PROJECT_ROOT = dirname(project().path)
+# TODO: Once all our projects are julia >1.8, we can make this at least a typed global
+"""Absolute path of current active project (folder containing `Project.toml`) at
+the time of including `using PConv`"""
+PROJECT_ROOT = ""
 
 """
     dirnames(n::Integer, path::AbstractString)

@@ -31,4 +31,9 @@ using Reexport
 
 @reexport using UnPack
 
+function __init__()
+    # Find project root at the time of including the PConv package
+    global PROJECT_ROOT = dirname(project().path)
+end
+
 end # module
