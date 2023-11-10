@@ -5,7 +5,7 @@ Convenience and helper functions often used
 3.) generate_interval
 4.) Extension of Basis functions
 5.) Comparison functions
-6.) Misc: size_mb, minimaize_distance
+6.) Misc: size_mb, minimaize_distance, match_length
 =#
 using Combinatorics: permutations
 
@@ -214,4 +214,33 @@ function minimize_distance(x::AbstractArray, y::AbstractArray)
     end
 
     return fid
+end
+
+"""
+    match_lengths(args...)
+
+Matches the lengths of the input arrays by padding singleton arrays (numbers) to matching length.
+
+# Arguments
+- `args...`: Variable number of arrays to be matched in length. (length of array matches or is 1)
+
+# Returns
+An array of arrays with lengths adjusted to match the maximum length among the input arrays.
+"""
+function match_lengths(args...)
+    length(args) == 1 && return [args[1]]
+
+    ls = map(length, args)
+    # Make sure that passed lengths are compatible
+    length(unique(ls)) > 2 && error("Arrays not compatible!")
+
+    N = maximum(ls)
+    args_vec = [] # Dont provide type for it to be more flexible!
+
+    for i in eachindex(args)
+        tmp = ls[i] > 1 ? args[i] : fill(args[i], N)
+        push!(args_vec, tmp |> collect)
+    end
+
+    return args_vec
 end

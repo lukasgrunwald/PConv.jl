@@ -14,7 +14,7 @@ export search_nearest, search_nearest_sorted, minimize_distance
 export generate_sym, generate_interval
 export void, identity
 export mdiff, fdiff, isapprox_eps, ≂
-export size_mb
+export size_mb, match_lengths
 
 # Complex spline interpolations
 include("cSpline.jl")
