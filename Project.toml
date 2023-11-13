@@ -1,7 +1,7 @@
 name = "PConv"
 uuid = "ddafdd3f-bffb-4613-bf4c-94e59b398e54"
 authors = ["Lukas Grunwald <lukas.grunwald@rwth-aachen.de>"]
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
