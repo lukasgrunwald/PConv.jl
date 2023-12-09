@@ -115,3 +115,47 @@ function overprint(str::AbstractString)
 
     println() #prints a new line, i really don't like this arcane codes
 end
+
+# ———————————————————————————————— Preproccessed include ——————————————————————————————— #
+
+""" Truncate file below given delimiter. Default behavior for pinclude"""
+truncate_below(delim) = x -> split(x, delim)[1]
+
+"""
+    pinclude(fname::AbstractString, preprocess_code::Function)
+    pinclude(fname::AbstractString, delim::AbstractString)
+
+Preprocessed include function. Before the code is included in the current scope,
+`preprocess_code(code)` is called to allow for modifications. If a string is supplied, the
+specified file is only included up to the specified delimiter, e.g. `##-`.
+"""
+function pinclude(fname::AbstractString, preprocess_code::Function)
+    isa(fname, String) || (fname = Base.convert(String, fname)::String)
+    _pinclude(identity, Main, fname, preprocess_code)
+end
+
+function pinclude(fname::AbstractString, delim::AbstractString)
+    isa(fname, String) || (fname = Base.convert(String, fname)::String)
+    _pinclude(identity, Main, fname, truncate_below(delim))
+end
+
+function _pinclude(mapexpr::Function, mod::Module, _path::AbstractString, preprocess_code::Function)
+    Base.@noinline # Workaround for module availability in _simplify_include_frames
+    path, prev = Base._include_dependency(mod, _path)
+
+    # Process the code of the file
+    _code = read(path, String)
+    code = preprocess_code(_code)
+
+    tls = task_local_storage()
+    tls[:SOURCE_PATH] = path
+    try
+        return include_string(mapexpr, mod, code, path)
+    finally
+        if prev === nothing
+            delete!(tls, :SOURCE_PATH)
+        else
+            tls[:SOURCE_PATH] = prev
+        end
+    end
+end
