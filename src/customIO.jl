@@ -139,8 +139,8 @@ function pinclude(fname::AbstractString, delim::AbstractString)
     _pinclude(identity, Main, fname, truncate_below(delim))
 end
 
-function _pinclude(mapexpr::Function, mod::Module, _path::AbstractString, preprocess_code::Function)
-    Base.@noinline # Workaround for module availability in _simplify_include_frames
+# @noinline Workaround for module availability in _simplify_include_frames
+@noinline function _pinclude(mapexpr::Function, mod::Module, _path::AbstractString, preprocess_code::Function)
     path, prev = Base._include_dependency(mod, _path)
 
     # Process the code of the file
