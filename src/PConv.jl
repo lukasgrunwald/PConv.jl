@@ -26,7 +26,7 @@ include("customIO.jl")
 export PROJECT_ROOT, dirnames
 export versionized_path, find_project_root
 export overprint
-export pinclude
+export pinclude, rinclude
 
 using Reexport
 

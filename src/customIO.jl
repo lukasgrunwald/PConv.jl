@@ -159,3 +159,20 @@ end
         end
     end
 end
+
+"""
+    rinclude(fname::AbstractString)
+
+Include with filepath relative to content root instead of relative path.
+"""
+function rinclude(fname::AbstractString)
+    isa(fname, String) || (fname = Base.convert(String, fname)::String)
+
+    if contains(fname, "..") # use relative path
+        path = fname
+    else # make absolute path relative to content root
+        path = joinpath(PROJECT_ROOT, fname)
+    end
+
+    Base._include(identity, Main, path)
+end
