@@ -61,3 +61,7 @@ function pauliMat(x::Int)
         return [1. + 0im 0.0; 0.0 -1.]
     end
 end
+
+# Commutator convenience functions
+commutator(A, B) = A * B - B * A
+anti_commutator(A, B) = A * B + B * A

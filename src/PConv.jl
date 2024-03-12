@@ -7,7 +7,7 @@ export VecF64, VecCF64, MatF64, MatCF64
 
 # Convenience functions
 include("helper_physics.jl")
-export nf, nb, heaviside, pauliMat
+export nf, nb, heaviside, pauliMat, commutator, anti_commutator
 
 include("helper_conv.jl")
 export search_nearest, search_nearest_sorted, minimize_distance
